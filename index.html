@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -146,91 +146,91 @@
     <h1>🌌 Mind-to-Art Generator</h1>
     <p class="center"><em>From feeling to cover art — in one breath.</em></p>
 
-    <label for="mood">💭 Deskripsikan Suasana (dalam kalimat bebas):</label>
-    <textarea id="mood" rows="3" placeholder="Contoh: Seperti hujan di kota Tokyo tahun 2099, sendirian, dengan musik synth yang menyayat hati..."></textarea>
+    <label for="mood">💭 Describe the Mood (in free sentences):</label>
+    <textarea id="mood" rows="3" placeholder="Example: Rain in Tokyo, 2099, alone, with heart-breaking synth music..."></textarea>
 
-    <button class="primary" onclick="interpretAndFill()">🧠 Terjemahkan Suasana Hati</button>
+    <button class="primary" onclick="interpretAndFill()">🧠 Interpret Mood</button>
 
-    <label for="artist">Nama Artis/Band:</label>
-    <input type="text" id="artist" placeholder="Contoh: Neon Tears, Void Echo" />
+    <label for="artist">Artist/Band Name:</label>
+    <input type="text" id="artist" placeholder="Example: Neon Tears, Void Echo" />
 
-    <label for="title">Judul Lagu/Album:</label>
-    <input type="text" id="title" placeholder="Contoh: Nocturnal, Ghost Signal, Monochrome Heart" />
+    <label for="title">Song/Album Title:</label>
+    <input type="text" id="title" placeholder="Example: Nocturnal, Ghost Signal, Monochrome Heart" />
 
-    <label for="genre">Genre Musik:</label>
-    <input type="text" id="genre" placeholder="Contoh: Synthwave, Lo-fi, Black Metal" />
+    <label for="genre">Music Genre:</label>
+    <input type="text" id="genre" placeholder="Example: Synthwave, Lo-fi, Black Metal" />
 
-    <label for="designer">Pilih Gaya Desainer:</label>
+    <label for="designer">Choose Designer Style:</label>
     <select id="designer"></select>
 
-    <div id="styleDescription">Pilih desainer untuk melihat gaya khasnya...</div>
-    <div id="recommendation">(Rekomendasi otomatis berdasarkan genre)</div>
+    <div id="styleDescription">Select a designer to see their signature style...</div>
+    <div id="recommendation">(Automatically recommended based on genre)</div>
 
-    <label for="element">Elemen Visual Tambahan (opsional):</label>
-    <input type="text" id="element" placeholder="Contoh: neon city, floating kanji, broken glass" />
+    <label for="element">Additional Visual Element (optional):</label>
+    <input type="text" id="element" placeholder="Example: neon city, floating kanji, broken glass" />
 
-    <button onclick="generatePoeticPrompt()">✨ Hasilkan Prompt</button>
-    <button onclick="copyPrompt()">📋 Salin ke Clipboard</button>
-    <button onclick="downloadPrompt()">💾 Unduh sebagai .txt</button>
+    <button onclick="generatePoeticPrompt()">✨ Generate Prompt</button>
+    <button onclick="copyPrompt()">📋 Copy to Clipboard</button>
+    <button onclick="downloadPrompt()">💾 Download as .txt</button>
 
     <div class="toggle">
       <input type="checkbox" id="darkMode">
-      <label for="darkMode">🌙 Mode Gelap</label>
+      <label for="darkMode">🌙 Dark Mode</label>
     </div>
 
     <div id="generatedPrompt" style="display:none;"></div>
   </div>
 
   <script>
-    // === Daftar Desainer ===
+    // === Designer List ===
     const designers = [
-      { name: "Adrian Marcinek", style: "Minimalis, kontras tinggi, abstrak gelap" },
-      { name: "Alan Aldridge", style: "Psychedelic 70-an, ilustrasi surreal, warna cerah & organik" },
-      { name: "Alex Steinweiss", style: "Grafis 1940–50an, tipografi vintage" },
-      { name: "Andy Warhol", style: "Pop Art, repetisi, warna flat mencolok" },
-      { name: "Aude Brisson", style: "Feminin, organik, goresan tinta halus" },
-      { name: "Banksy", style: "Stensil hitam-putih, satir sosial, urban" },
-      { name: "Barney Bubbles", style: "Punk/Post-punk Inggris 70–80an, eksperimental" },
-      { name: "Bernarda Nibera Conic", style: "Abstrak emosional, tekstur cat tebal" },
-      { name: "Björn Bauer", style: "Digital surreal, futuristik, organik & mekanik" },
-      { name: "Cal Schenkel", style: "Kolase absurd, gaya kartun aneh (Frank Zappa)" },
-      { name: "Christophe Szpajdel", style: "Logos metal; tulisan tajam, gothic, hand-drawn" },
-      { name: "Daniel Vincent Gomes", style: "Digital painting epik, fantasi gelap" },
-      { name: "David Carson", style: "Grunge, tipografi hancur, chaos artistik" },
-      { name: "David Stone Martin", style: "Jazz 50–60an, sketsa linier, monokrom" },
-      { name: "Derek Riggs", style: "Metal epik, karakter robotik (Iron Maiden)" },
-      { name: "Ekaterina Gorbacheva", style: "Surreal Rusia, warna pastel gelap, mimpi" },
-      { name: "Ella Mezule", style: "Abstrak lembut, warna tenang, meditatif" },
-      { name: "Emek Golan", style: "Poster rock, detail padat, psychedelic" },
-      { name: "Felipe Novoa", style: "Tipografi kuat, minimalis modern" },
-      { name: "HR Giger", style: "Biomekanikal, suram, horor artistik" },
-      { name: "Herm the Younger", style: "Vintage Americana, tinta & goresan" },
-      { name: "Hugh Syme", style: "Rock/metal progresif, simbolik, kompleks" },
-      { name: "Jack McArdle", style: "Digital realistis, karakter hiper-detail" },
-      { name: "Jamie Hewlett", style: "Gorillaz, gaya komik, warna cerah" },
-      { name: "John Berg", style: "Desain klasik, elegan, seimbang" },
-      { name: "John Pasche", style: "Ikonik, simbol kuat (Rolling Stones)" },
-      { name: "Julian Opie", style: "Minimalis digital, siluet sederhana" },
-      { name: "Juliana Žamoit", style: "Cat air & tinta, alami, feminin" },
-      { name: "Larry Carroll", style: "Lukisan cat minyak gelap, darah & api" },
-      { name: "Leonardo Moreira", style: "Abstrak dinamis, ekspresif" },
-      { name: "Michael Bierut", style: "Desain modern, clean, profesional" },
-      { name: "Milton Glaser", style: "Psychedelic 60an, warna cerah, spiral" },
-      { name: "Paula Scher", style: "Tipografi besar, warna blok, energik" },
-      { name: "Paul Whitehead", style: "Prog rock, ilustrasi surreal, fantasi gelap" },
-      { name: "Peter Blake", style: "Pop art Inggris, kolase ikon budaya" },
-      { name: "Peter Saville", style: "Minimalis elegan, abstrak, Factory Records" },
-      { name: "Reid Miles", style: "Jazz Blue Note, tipografi eksperimental" },
-      { name: "Ryan McGinley", style: "Fotografi bebas, remaja, alam" },
-      { name: "Robert Vargas", style: "Mural urban, potret realistis, komunitas" },
-      { name: "Roger Dean", style: "Dunia fantasi mengambang, arsitektur organik" },
-      { name: "Stanley “Mouse” Miller", style: "Psychedelic rock 60an, ornamen melingkar" },
-      { name: "Storm Thorgerson", style: "Konsep surreal, foto nyata + elemen aneh" },
-      { name: "Trent Walton", style: "Desain modern, clean, tipografi indah" },
-      { name: "Vaughan Oliver", style: "Abstrak, tekstur, misterius, seni gelap" }
+      { name: "Adrian Marcinek", style: "Minimalist, high contrast, dark abstract textures" },
+      { name: "Alan Aldridge", style: "1970s psychedelic, surreal illustrations, bright & organic colors" },
+      { name: "Alex Steinweiss", style: "1940–50s graphic design, vintage typography" },
+      { name: "Andy Warhol", style: "Pop Art, repetition, bold flat colors" },
+      { name: "Aude Brisson", style: "Feminine, organic, delicate ink strokes" },
+      { name: "Banksy", style: "Black-and-white stencil, social satire, urban" },
+      { name: "Barney Bubbles", style: "UK Punk/Post-punk 70–80s, experimental" },
+      { name: "Bernarda Nibera Conic", style: "Emotional abstraction, thick paint textures" },
+      { name: "Björn Bauer", style: "Digital surreal, futuristic, organic & mechanical" },
+      { name: "Cal Schenkel", style: "Absurd collage, weird cartoon style (Frank Zappa)" },
+      { name: "Christophe Szpajdel", style: "Metal logos; sharp, gothic, hand-drawn lettering" },
+      { name: "Daniel Vincent Gomes", style: "Epic digital painting, dark fantasy" },
+      { name: "David Carson", style: "Grunge, destroyed typography, artistic chaos" },
+      { name: "David Stone Martin", style: "Jazz 50–60s, linear sketches, monochrome" },
+      { name: "Derek Riggs", style: "Epic metal, robotic characters (Iron Maiden)" },
+      { name: "Ekaterina Gorbacheva", style: "Russian surreal, dark pastel, dreamlike" },
+      { name: "Ella Mezule", style: "Soft abstraction, calm colors, meditative" },
+      { name: "Emek Golan", style: "Rock posters, dense details, psychedelic" },
+      { name: "Felipe Novoa", style: "Strong typography, modern minimalism" },
+      { name: "HR Giger", style: "Biomechanical, dark, artistic horror" },
+      { name: "Herm the Younger", style: "Vintage Americana, ink & brush strokes" },
+      { name: "Hugh Syme", style: "Progressive rock/metal, symbolic, complex" },
+      { name: "Jack McArdle", style: "Hyper-detailed digital realism, characters" },
+      { name: "Jamie Hewlett", style: "Gorillaz, comic style, bright colors" },
+      { name: "John Berg", style: "Classic design, elegant, balanced" },
+      { name: "John Pasche", style: "Iconic, strong symbols (Rolling Stones)" },
+      { name: "Julian Opie", style: "Digital minimalism, simple silhouettes" },
+      { name: "Juliana Žamoit", style: "Watercolor & ink, natural, feminine" },
+      { name: "Larry Carroll", style: "Dark oil painting, blood & fire" },
+      { name: "Leonardo Moreira", style: "Dynamic abstraction, expressive" },
+      { name: "Michael Bierut", style: "Modern design, clean, professional" },
+      { name: "Milton Glaser", style: "1960s psychedelic, bright colors, spiral" },
+      { name: "Paula Scher", style: "Large typography, bold color blocks, energetic" },
+      { name: "Paul Whitehead", style: "Prog rock, surreal illustration, dark fantasy" },
+      { name: "Peter Blake", style: "British Pop Art, cultural icon collage" },
+      { name: "Peter Saville", style: "Elegant minimalism, abstract, Factory Records" },
+      { name: "Reid Miles", style: "Jazz Blue Note, experimental typography" },
+      { name: "Ryan McGinley", style: "Free photography, youth, nature" },
+      { name: "Robert Vargas", style: "Urban murals, realistic portraits, community" },
+      { name: "Roger Dean", style: "Floating fantasy worlds, organic architecture" },
+      { name: "Stanley “Mouse” Miller", style: "1960s psychedelic rock, circular ornaments" },
+      { name: "Storm Thorgerson", style: "Surreal concept, real photos + odd elements" },
+      { name: "Trent Walton", style: "Modern design, clean, beautiful typography" },
+      { name: "Vaughan Oliver", style: "Abstract, textures, mysterious, dark art" }
     ];
 
-    // Isi dropdown desainer
+    // Populate designer dropdown
     const select = document.getElementById("designer");
     designers.forEach(d => {
       const opt = document.createElement("option");
@@ -239,18 +239,18 @@
       select.appendChild(opt);
     });
 
-    // Update deskripsi desainer
+    // Update style description
     select.addEventListener("change", () => {
       const desc = document.getElementById("styleDescription");
       const selected = designers.find(d => d.name === select.value);
-      desc.textContent = `Gaya: ${selected.name} — ${selected.style}`;
+      desc.textContent = `Style: ${selected.name} — ${selected.style}`;
       document.getElementById("recommendation").style.display = "none";
     });
 
-    // Inisialisasi deskripsi pertama
-    document.getElementById("styleDescription").textContent = `Gaya: ${designers[0].name} — ${designers[0].style}`;
+    // Initialize first description
+    document.getElementById("styleDescription").textContent = `Style: ${designers[0].name} — ${designers[0].style}`;
 
-    // === Mapping Genre → Desainer Terbaik ===
+    // === Genre to Designer Mapping ===
     const genreToDesigner = {
       "synthwave": "Adrian Marcinek",
       "lofi|lo-fi|chillhop|chill hop": "Ella Mezule",
@@ -269,7 +269,7 @@
       "folk|acoustic": "Juliana Žamoit"
     };
 
-    // === Rekomendasi Desainer Otomatis ===
+    // === Auto-Recommend Designer ===
     function recommendDesigner() {
       const genreInput = document.getElementById("genre").value.trim().toLowerCase();
       if (!genreInput) return;
@@ -293,10 +293,10 @@
       }
     }
 
-    // Dengarkan perubahan di genre
+    // Listen to genre input
     document.getElementById("genre").addEventListener("input", recommendDesigner);
 
-    // === Interpretasi Suasana Hati ===
+    // === Interpret Mood ===
     function interpretMood(text) {
       const keywords = {
         genre: {
@@ -312,27 +312,27 @@
           "folk|acoustic|campfire": "Folk"
         },
         mood: {
-          "melankolis|sendiri|hampa|sunyi|patah|lonely": "Melankolis",
+          "melankolis|lonely|empty|silent|broken": "Melancholic",
           "epic|hero|battle|rise|legend": "Epic",
           "chaos|noise|broken|angry|rage": "Chaotic",
-          "tenang|damai|napas|alami|serene": "Calm",
-          "futuristik|cyber|digital|neon|machine": "Futuristic",
-          "horror|seram|darah|kematian": "Horror"
+          "calm|peaceful|breath|natural|serene": "Calm",
+          "futuristic|cyber|digital|neon|machine": "Futuristic",
+          "horror|scary|blood|death": "Horror"
         },
         color: {
-          "biru|neon|listrik|langit|metal|cyber": "Biru elektrik, hitam, neon biru",
-          "merah|darah|api|panas|anger": "Merah darah, hitam, oranye menyala",
-          "pink|ungu|sorot|glow|dream": "Pink neon, ungu dalam, kuning lembut",
-          "hijau|toxic|nuklir|jamur|alien": "Hijau toksik, abu-abu, hitam",
-          "monokrom|hitam|putih|abu|grayscale": "Hitam, putih, abu-abu",
-          "warna cerah|pelangi|ceria": "Pelangi cerah, kontras tinggi"
+          "blue|neon|electric|sky|metal|cyber": "Electric blue, black, neon blue",
+          "red|blood|fire|hot|anger": "Blood red, black, bright orange",
+          "pink|purple|glow|dream": "Neon pink, deep purple, soft yellow",
+          "green|toxic|nuclear|mushroom|alien": "Toxic green, gray, black",
+          "monochrome|black|white|gray|grayscale": "Black, white, gray",
+          "bright colors|rainbow|cheerful": "Bright rainbow, high contrast"
         },
         typography: {
-          "glitch|rusak|digital|error|pixel": "Tipografi rusak (glitch), transparan, layer offset",
-          "jepang|kanji|calligraphy|brush|huruf tangan": "Tipografi Jepang, goresan kuas, semi-transparan",
-          "gothic|tajam|tulisan tangan|metal": "Gothic hand-drawn, tinta hitam pekat",
-          "minimalis|tipografi|clean|sans-serif": "Tipografi minimalis, sans-serif modern",
-          "vintage|retro|typewriter": "Typewriter vintage, kertas usang"
+          "glitch|broken|digital|error|pixel": "Glitch typography, transparent, offset layers",
+          "japanese|kanji|calligraphy|brush|handwritten": "Japanese typography, brush strokes, semi-transparent",
+          "gothic|sharp|handwritten|metal": "Gothic hand-drawn, thick black ink",
+          "minimalist|typography|clean|sans-serif": "Minimalist typography, modern sans-serif",
+          "vintage|retro|typewriter": "Vintage typewriter, aged paper"
         }
       };
 
@@ -353,10 +353,10 @@
     function extractVisualFromMood(text) {
       const visuals = {
         "tokyo|city|urban|neon|rain": "neon city at night, rain reflections",
-        "hutan|alami|pohon|sunrise": "ancient forest with morning mist",
-        "angkasa|luar angkasa|bintang|galaksi": "cosmic nebula with drifting planets",
-        "gua|batu|api|tikus": "cave with glowing fungi and fireflies",
-        "pasar|tradisional|indonesia|nusantara": "vibrant traditional market at dusk"
+        "forest|nature|trees|sunrise": "ancient forest with morning mist",
+        "space|galaxy|stars|cosmic": "cosmic nebula with drifting planets",
+        "cave|stone|fire|fireflies": "cave with glowing fungi and fireflies",
+        "market|traditional|indonesia|nusantara": "vibrant traditional market at dusk"
       };
       for (const [pattern, value] of Object.entries(visuals)) {
         if (new RegExp(pattern, "i").test(text)) return value;
@@ -367,7 +367,7 @@
     function interpretAndFill() {
       const moodText = document.getElementById("mood").value.trim();
       if (!moodText) {
-        alert("Tulis dulu suasana hatimu...");
+        alert("Please describe your mood first...");
         return;
       }
 
@@ -380,7 +380,7 @@
       document.getElementById("genre").dispatchEvent(new Event("input"));
     }
 
-    // === Generate Prompt: Hanya Judul + Tanpa Logo + Tanpa Teks Aneh ===
+    // === Generate Prompt: Only Title, No Extra Text ===
     function generatePoeticPrompt() {
       const title = document.getElementById("title").value.trim() || "Untitled";
       const genre = document.getElementById("genre").value.trim() || "an unnamed genre";
@@ -401,29 +401,29 @@
         prompt += `A visually striking album cover inspired by ${genre} culture. `;
       }
 
-      // 🔐 HANYA JUDUL — TEGAS & BERULANG
+      // 🔐 ONLY TITLE — STRONG & CLEAR
       prompt += `The ONLY text in the entire artwork is the song title: "${title}". `;
       prompt += `Do NOT include ANY text, labels, signatures, artist names, band logos, record labels, phone numbers, website URLs, or hidden watermarks. `;
       prompt += `Absolutely NO random words, letters, or symbols that look like text. `;
       prompt += `If any text appears other than "${title}", it is a failure. `;
 
-      // 🎨 Gaya desainer — tanpa menyebut nama
+      // 🎨 Style inspiration
       prompt += `Artistic style inspired by ${styleDesc}. `;
       prompt += `Avoid literal depictions of musicians, portraits, or stage performances. `;
       prompt += `Instead, express the music through abstract shapes, environmental storytelling, or symbolic composition. `;
 
-      // 🎨 Warna & tipografi
+      // 🎨 Colors & typography
       prompt += `Color palette: ${colors}. `;
       prompt += `Typography: ${typography}, seamlessly integrated into the scene — not floating or pasted on. `;
 
-      // 🖼 Elemen visual
+      // 🖼 Visual element
       if (element) {
         prompt += `Central visual motif: ${element}. `;
       } else {
         prompt += `Visual theme should reflect the mood and genre without relying on human figures. `;
       }
 
-      // ✨ Kualitas akhir
+      // ✨ Final quality
       prompt += `Ultra-detailed, 4K resolution, cinematic lighting, digital painting, surreal realism, high contrast. `;
       prompt += `Focus on atmosphere, texture, and emotion — not on portraits or branding.`;
 
@@ -432,23 +432,23 @@
       output.textContent = prompt;
     }
 
-    // Salin ke clipboard
+    // Copy to clipboard
     function copyPrompt() {
       const output = document.getElementById("generatedPrompt");
       if (output.style.display === "none") {
-        alert("Silakan hasilkan prompt terlebih dahulu.");
+        alert("Please generate a prompt first.");
         return;
       }
       navigator.clipboard.writeText(output.textContent).then(() => {
-        alert("✅ Prompt berhasil disalin ke clipboard!");
+        alert("✅ Prompt copied to clipboard!");
       });
     }
 
-    // Unduh sebagai .txt
+    // Download as .txt
     function downloadPrompt() {
       const output = document.getElementById("generatedPrompt");
       if (output.style.display === "none") {
-        alert("Silakan hasilkan prompt terlebih dahulu.");
+        alert("Please generate a prompt first.");
         return;
       }
       const text = output.textContent;
@@ -461,7 +461,7 @@
       URL.revokeObjectURL(url);
     }
 
-    // Mode Gelap
+    // Dark Mode
     document.getElementById("darkMode").addEventListener("change", (e) => {
       document.body.classList.toggle("dark", e.target.checked);
     });
